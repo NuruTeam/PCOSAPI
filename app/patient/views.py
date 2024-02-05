@@ -1,11 +1,16 @@
 from flask import make_response, jsonify, request
 from flask.views import MethodView
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask import Blueprint
+
+#authentication_blueprint: Blueprint = Blueprint('authentication', __name__)
+
 
 from app.models.diagnosis_model import Diagnosis, DiagnosisSchema
 from app.models.patient_model import Patient
 from app.models.user_model import Users
-
+from app.patient.__init__ import patient_blueprint
+from app.authentication import authentication_blueprint
 
 class PatientDiagnosisView(MethodView):
     def __init__(self):
@@ -64,7 +69,7 @@ class PatientDiagnosisView(MethodView):
 
 patient_diagonosis_view = PatientDiagnosisView.as_view('patient_diagnosis_view')
 
-authentication_blueprint.add_url_rule(
+patient_blueprint.add_url_rule(
     '/patient/diagnosis',
     view_func=patient_diagonosis_view,
     methods=['POST']
