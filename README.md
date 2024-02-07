@@ -45,6 +45,12 @@ To run the application, execute the following command:
 flask run -p 6001
 ```
 
+or
+
+```bash
+python run.py
+```
+
 # API Endpoints
 
 ## Patient Diagnosis
