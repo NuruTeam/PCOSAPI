@@ -30,7 +30,7 @@ def create_app(config_name):
     from app.patient import patient_blueprint
     from app.authentication import authentication_blueprint
 
-    app.register_blueprint(patient_blueprint)
     app.register_blueprint(authentication_blueprint)
+    app.register_blueprint(patient_blueprint)
 
     return app

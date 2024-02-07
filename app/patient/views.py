@@ -5,6 +5,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from app.models.diagnosis_model import Diagnosis, DiagnosisSchema
 from app.models.patient_model import Patient
 from app.models.user_model import Users
+from app.patient import patient_blueprint
 
 
 class PatientDiagnosisView(MethodView):
@@ -37,7 +38,15 @@ class PatientDiagnosisView(MethodView):
         data = request.get_json()
         try:
             identity = get_jwt_identity()
-            user = Users.get_user_by_id(identity)
+            try:
+                user = Users.get_user_by_id(identity)
+            except Exception as e:
+                response = {
+                    'status': 'User not found',
+                    'message': str(e)
+                }
+                return make_response(jsonify(response)), 500
+
             patient = Patient.get_by_user_id(user.user_id)
             diagnosis_uuid = Diagnosis.generate_slug()
             new_diagnosis = Diagnosis(
@@ -62,10 +71,11 @@ class PatientDiagnosisView(MethodView):
             }
             return make_response(jsonify(response)), 500
 
-patient_diagonosis_view = PatientDiagnosisView.as_view('patient_diagnosis_view')
 
-authentication_blueprint.add_url_rule(
+patient_diagnosis_view = PatientDiagnosisView.as_view('patient_diagnosis_view')
+
+patient_blueprint.add_url_rule(
     '/patient/diagnosis',
-    view_func=patient_diagonosis_view,
-    methods=['POST']
+    view_func=PatientDiagnosisView.as_view('patient_diagnosis_view'),
+    methods=['GET', 'POST']
 )
