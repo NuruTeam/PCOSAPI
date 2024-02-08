@@ -32,7 +32,5 @@ def create_app(config_name):
 
     app.register_blueprint(authentication_blueprint)
     app.register_blueprint(patient_blueprint)
-    
-    print("Patient blueprint registered successfully.") 
 
     return app
