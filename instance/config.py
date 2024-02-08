@@ -8,7 +8,7 @@ class Config(object):
     SECRET = os.getenv('SECRET')
 
     # Assuming you are using Microsoft SQL Server
-    SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://{}:{}@{}/{}?driver=ODBC+Driver+18+for+SQL+Server".format(
+    SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://{}:{}@{}/{}?driver=ODBC+Driver+17+for+SQL+Server".format(
         os.getenv('DEV_DB_USERNAME'),
         os.getenv('DEV_DATABASE_PASSWORD'),
         os.getenv('DEV_DATABASE_URL'),

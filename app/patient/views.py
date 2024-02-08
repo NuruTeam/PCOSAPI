@@ -67,10 +67,14 @@ class PatientDiagnosisView(MethodView):
             }
             return make_response(jsonify(response)), 500
 
-patient_diagonosis_view = PatientDiagnosisView.as_view('patient_diagnosis_view')
+patient_diagnosis = PatientDiagnosisView.as_view('patient_diagnosis')
+
 
 patient_blueprint.add_url_rule(
     '/patient/diagnosis',
-    view_func=patient_diagonosis_view,
-    methods=['POST']
+    view_func=patient_diagnosis,
+     methods=['GET', 'POST']
 )
+
+
+

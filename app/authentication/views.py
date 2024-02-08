@@ -93,24 +93,26 @@ class UserAuthenticationLoginView(MethodView):
                         is_onboarded = True
                         try:
                             access_token = user_data.generate_access_token(user_data.user_id)
-                            last_login = user_data.last_login
+                              # Update last login
+                            # user_data.last_login = str(datetime.now())
+                            # user_data.save()
+                            # last_login = user_data.last_login
                             response = {
                                 "status": 'success',
                                 'user_uuid': user_data.user_uuid,
                                 'user_id': user_data.user_id,
                                 'account_activation_status': account_activation_status,
                                 'is_verified': user_data.is_verified,
-                                'last_login': last_login,
+                               
                                 'data': {'access_token': access_token}
                             }
 
-                            # Update last login
-                            user_data.last_login = str(datetime.now())
-                            user_data.save()
+                          
 
                             # delete the failed logins
                             failed_attempts = FailedLoginAttempt.get_all_attempts(user_data.email)
-                            failed_attempts.delete()
+                            FailedLoginAttempt.delete(user_data.email)
+                            # failed_attempts.delete()
 
                             return make_response(jsonify(response)), 200
 

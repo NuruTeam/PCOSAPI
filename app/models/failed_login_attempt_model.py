@@ -29,9 +29,14 @@ class FailedLoginAttempt(db.Model):
         except:
             db.session.rollback()
 
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+    def delete(email):
+        try:
+            db.session.query(FailedLoginAttempt).filter_by(email=email).delete()
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise e
+
 
     @staticmethod
     def get_all():
