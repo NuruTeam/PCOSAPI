@@ -54,7 +54,7 @@ class PatientDiagnosisView(MethodView):
             }
             return make_response(jsonify(response)), 500
 
-    @jwt_required
+    @jwt_required()
     def post(self):
         data = request.get_json()
 
@@ -97,7 +97,7 @@ class PatientDiagnosisView(MethodView):
                 diagnosis_uuid=diagnosis_uuid,
                 diagnosis_name=data['diagnosis_name'],
                 diagnosis_description=data['diagnosis_description'],
-                diagnosis_image_url=data['diagnostic_image_url'],
+                diagnosis_image_url = data['diagnosis_image_url'],
                 patient_id=patient.patient_id
             )
             new_diagnosis.save()
@@ -120,7 +120,7 @@ patient_diagnosis_view = PatientDiagnosisView.as_view('patient_diagnosis_view')
 
 patient_blueprint.add_url_rule(
     '/patient/diagnosis',
-    view_func=PatientDiagnosisView.as_view('patient_diagnosis_view'),
+    view_func=patient_diagnosis_view,
     methods=['GET', 'POST']
 )
 
